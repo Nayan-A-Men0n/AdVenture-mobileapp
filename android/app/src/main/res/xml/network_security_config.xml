@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">localhost</domain>
-        <domain includeSubdomains="true">192.168.1.4</domain>
-        <!-- You can also add other domains or IP addresses if needed -->
-    </domain-config>
-</network-security-config>
