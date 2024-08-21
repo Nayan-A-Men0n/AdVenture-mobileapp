@@ -7,16 +7,18 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-ad_content = {}
 def get_db_connection():
     conn = psycopg2.connect(
-        database="miniproj",
-        user="postgres",
-        host='localhost',
-        password="123456",
-        port=5432
+        database=os.getenv('DATABASE_NAME'),
+        user=os.getenv('DATABASE_USER'),
+        host=os.getenv('DATABASE_HOST'),
+        password=os.getenv('DATABASE_PASSWORD'),
+        port=os.getenv('DATABASE_PORT')
     )
     return conn
+
+#app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
 
 #SIGN UP
 def create_user(username, password, email, first_name, last_name):
