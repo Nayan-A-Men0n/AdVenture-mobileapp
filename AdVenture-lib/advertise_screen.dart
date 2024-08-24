@@ -37,7 +37,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
   List<String> _timeSlots = [];
   File? _imageFile;
   bool _isAdUploaded = false;
-  String? _userId; // Define _userId as a field
+  String? _userId; 
   int? _adId;
 
   @override
@@ -265,7 +265,6 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        // Ensure that 'total_cost' is parsed as an integer
         return double.parse(data['total_cost']);
       } else {
         print('Failed to calculate cost: ${response.statusCode}');
@@ -279,7 +278,6 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
 
   void _filterScreens(String? selectedLocation, String? selectedBusinessType) {
     if (selectedLocation == null || selectedBusinessType == null) {
-      // Show a message if no selection is made
       return;
     }
 
@@ -295,13 +293,13 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
     }
 
     final selectedScreensData =
-        _selectedScreens.toList(); // Convert set to list
+        _selectedScreens.toList(); 
 
     final requestBody = {
       'location': _selectedLocation!,
       'business_type': _selectedBusinessType!,
       'screen_names':
-          selectedScreensData, // Use 'screen_names' instead of 'screens'
+          selectedScreensData,
       'date': _selectedDate!.toIso8601String(),
     };
 
@@ -328,10 +326,8 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
   }
 
   Future<void> adsschedule() async {
-    // Validate selections (optional)
     final selectedScreenNames = _selectedScreens.toList();
     if (_selectedScreens.isEmpty || _startTime == null || _endTime == null) {
-      // Show a message indicating required selections
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please select screens, start time, and end time'),
@@ -346,7 +342,6 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
             })
         .toList();
 
-    // Additionally, include the selected location and business type
     final selectedLocation = _selectedLocation;
     if (selectedLocation != null) {
       selectedData.add({'location': selectedLocation});
@@ -357,7 +352,6 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
       selectedData.add({'business_type': selectedBusinessType});
     }
 
-    // Replace with your actual API endpoint for ad scheduling (should accept screen data)
     final url = Uri.parse('http://127.0.0.1:5000/ad_schedule');
 
     final body = jsonEncode({
@@ -375,7 +369,6 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
     );
 
     if (response.statusCode == 200) {
-      // Show success message and potentially clear selections
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Ad schedule created successfully!'),
@@ -388,18 +381,16 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
       });
     } else {
       print('Failed to schedule ads: ${response.statusCode}');
-      // Consider showing an error message to the user
     }
   }
 
-  // Other methods like fetchScreens, _pickStartTime, _pickEndTime, _pickDate, calculateCost, _filterScreens, _fetchTimeSlots, adsschedule
   String extractFileName(String filePath) {
     List<String> pathParts = filePath.split(Platform.pathSeparator);
     return pathParts.last;
   }
 
   Future<void> uploadImage(int userId) async {
-    if (_imageFile == null) return; // Handle no image selected
+    if (_imageFile == null) return;
 
     final Uri url = Uri.parse('http://127.0.0.1:5000/upload');
     var request = http.MultipartRequest('POST', url);
@@ -415,7 +406,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
 
     if (response.statusCode == 200) {
       try {
-        // Extract ad_id from the response
+        
         final String responseString = await response.stream.bytesToString();
         final dynamic responseData = jsonDecode(responseString);
 
@@ -423,7 +414,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
             responseData.containsKey('ad_id')) {
           final int adId = responseData['ad_id'] as int;
 
-          // Upload successful, store ad_id in a variable
+          
           setState(() {
             _isAdUploaded = true; // Update ad upload status
             _imageFile = null; // Clear image selection after successful upload
@@ -440,11 +431,11 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
         }
       } catch (e) {
         print('Error parsing response: $e');
-        // Handle error, e.g., show a message to the user
+        
       }
     } else {
       print('Error: ${response.reasonPhrase}');
-      // Handle HTTP error, e.g., show a message to the user
+      
     }
   }
 
@@ -456,7 +447,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
         _imageFile = File(result.files.single.path!);
       });
     } else {
-      // Handle user cancellation or error
+     
     }
   }
 
@@ -505,19 +496,19 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
                     icon: const Icon(Icons.filter_list),
                     label: const Text('Filter Screens'),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(150.0, 50.0), // Set minimum size
+                      minimumSize: const Size(150.0, 50.0), 
                       backgroundColor: Colors.blue,
                     ),
                   ),
                 ),
-                const SizedBox(width: 16.0), // Add distance between buttons
+                const SizedBox(width: 16.0), 
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () => _pickDate(context),
                     icon: const Icon(Icons.calendar_today),
                     label: const Text('Select Date'),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(150.0, 50.0), // Set minimum size
+                      minimumSize: const Size(150.0, 50.0), 
                       backgroundColor: Colors.green,
                     ),
                   ),
@@ -563,9 +554,8 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
                           ),
                           SizedBox(
                               width:
-                                  16.0), // Adjust spacing between CheckboxListTile and Unavailable Time Slots
+                                  16.0), 
                           Expanded(
-                            // Wrap the Unavailable Time Slots inside Expanded to push it to the right
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -582,7 +572,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
                                       timeSlot,
                                       style: TextStyle(
                                           fontSize:
-                                              16.0), // Adjust the font size as needed
+                                              16.0), 
                                     );
                                   }),
                                 ],
@@ -617,13 +607,10 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
-                // Call the function to pick a file
                 await _pickImage();
-                // Call the function to upload the picked image
                 if (_userId != null) {
                   uploadImage(int.parse(_userId!));
                 } else {
-                  // Handle case where userId is null
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('User ID not available.'),
@@ -637,16 +624,15 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
                 backgroundColor: Colors.orange,
               ),
             ),
-            const SizedBox(height: 8.0), // Add gap between buttons
+            const SizedBox(height: 8.0), 
             ElevatedButton(
               onPressed: () {
-                // Call the function to schedule ads here
                 adsschedule();
               },
               child: Text('Schedule Ads'),
               style: ElevatedButton.styleFrom(
                   // Set color to grey when button is disabled
-                  //onPrimary: _isAdUploaded ? null : Colors.grey,
+                  foregroundColor: _isAdUploaded ? null : Colors.grey,
                   ),
             ),
           ],

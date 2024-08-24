@@ -13,8 +13,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Wrap Scaffold with Container
-      color: Color.fromARGB(255, 97, 5, 5), // Set background color here
+      color: Color.fromARGB(255, 97, 5, 5),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Dashboard'),
@@ -29,7 +28,7 @@ class DashboardScreen extends StatelessWidget {
                 _buildSectionTitle('Your Ads'),
                 const SizedBox(height: 10.0),
                 GridView.count(
-                  crossAxisCount: 3, // Number of columns in the grid
+                  crossAxisCount: 3, 
                   crossAxisSpacing: 40.0,
                   mainAxisSpacing: 40.0,
                   shrinkWrap: true,
@@ -44,7 +43,7 @@ class DashboardScreen extends StatelessWidget {
                 _buildSectionTitle('Your Screens'),
                 const SizedBox(height: 10.0),
                 GridView.count(
-                  crossAxisCount: 3, // Number of columns in the grid
+                  crossAxisCount: 3, 
                   crossAxisSpacing: 40.0,
                   mainAxisSpacing: 40.0,
                   shrinkWrap: true,
@@ -78,7 +77,7 @@ class DashboardScreen extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Image.asset(
-          'assets/adimage.jpg', // Replace 'assets/ad_image.jpg' with your image path
+          'assets/adimage.jpg', 
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
@@ -118,7 +117,7 @@ class DashboardScreen extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Image.asset(
-          'assets/regimage.jpeg', // Replace 'assets/register_image.jpg' with your image path
+          'assets/regimage.jpeg', 
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
@@ -161,14 +160,14 @@ class DashboardScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // Center text vertically
+        mainAxisAlignment: MainAxisAlignment.center, 
         crossAxisAlignment:
-            CrossAxisAlignment.center, // Center text horizontally
+            CrossAxisAlignment.center, 
         children: [
           Text(
             title,
             style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center, // Align text in the center
+            textAlign: TextAlign.center, 
           ),
           Text(
             value.toString(),
@@ -178,7 +177,7 @@ class DashboardScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )
                 : const TextStyle(fontSize: 20.0),
-            textAlign: TextAlign.center, // Align text in the center
+            textAlign: TextAlign.center,
           ),
         ],
       ),

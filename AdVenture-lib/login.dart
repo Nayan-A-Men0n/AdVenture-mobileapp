@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: false, // Set debug banner to false
+      debugShowCheckedModeBanner: false,
       home: LoginPage(),
     );
   }
@@ -202,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
       } on FormatException catch (e) {
-        // Handle JSON parsing errors
+        
         print('Error parsing response: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('An error occurred during login.')),

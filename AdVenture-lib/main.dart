@@ -26,11 +26,11 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const LoginPage(),
-          //'/NewScreen': (context) => const SignupPage(),
+          
           '/DashboardScreen': (context) => const DashboardScreen(),
           '/RegisterScreen': (context) => const NewScreenPage(),
           '/SuperAdminDashboard': (context) => const SuperAdminDashboard(),
-          // ... other routes for your app
+          
         },
       ),
     );
