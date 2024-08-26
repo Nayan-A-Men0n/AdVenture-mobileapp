@@ -35,7 +35,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
   TimeOfDay? _endTime;
   DateTime? _selectedDate;
   List<String> _timeSlots = [];
-  File? _imageFile;
+  File? _vidFile;
   bool _isAdUploaded = false;
   String? _userId; 
   int? _adId;
@@ -389,17 +389,17 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
     return pathParts.last;
   }
 
-  Future<void> uploadImage(int userId) async {
-    if (_imageFile == null) return;
+  Future<void> uploadAd(int userId) async {
+    if (_vidFile == null) return;
 
     final Uri url = Uri.parse('http://127.0.0.1:5000/upload');
     var request = http.MultipartRequest('POST', url);
 
-    // Extract file name from the image file path
-    String fileName = extractFileName(_imageFile!.path);
+    // Extract file name from the file path
+    String fileName = extractFileName(_vidFile!.path);
 
-    // Send the file name instead of the image file
-    request.fields['image_file_name'] = fileName; // Only the file name is sent
+    // Send the file name instead of the file path
+    request.fields['vid_file_name'] = fileName; // Only the file name is sent
     request.fields['advertiser_id'] = userId.toString();
 
     final response = await request.send();
@@ -417,7 +417,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
           
           setState(() {
             _isAdUploaded = true; // Update ad upload status
-            _imageFile = null; // Clear image selection after successful upload
+            _vidFile = null; // Clear image selection after successful upload
             _adId = adId; // Store ad_id in a variable
           });
           print(_adId);
@@ -444,7 +444,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
         .pickFiles(allowMultiple: false, type: FileType.any);
     if (result != null) {
       setState(() {
-        _imageFile = File(result.files.single.path!);
+        _vidFile = File(result.files.single.path!);
       });
     } else {
      
@@ -517,9 +517,9 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
             ),
             const SizedBox(height: 16.0),
             if (screens.isNotEmpty)
-              Text(
+              const Text(
                 'Selected Screens:',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -537,8 +537,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
                       Row(
                         children: [
                           Container(
-                            // Wrap CheckboxListTile with a Container to provide width constraints
-                            width: 200, // Set a specific width value
+                            width: 200,
                             child: CheckboxListTile(
                               title: Text(screen.name),
                               value: screen.isSelected,
@@ -552,14 +551,14 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
                               }),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                               width:
                                   16.0), 
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Unavailable Time Slots',
                                   style: TextStyle(
                                     fontSize: 16.0,
@@ -570,7 +569,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
                                   ..._timeSlots.map((timeSlot) {
                                     return Text(
                                       timeSlot,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize:
                                               16.0), 
                                     );
@@ -609,7 +608,7 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
               onPressed: () async {
                 await _pickImage();
                 if (_userId != null) {
-                  uploadImage(int.parse(_userId!));
+                  uploadAd(int.parse(_userId!));
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -641,9 +640,5 @@ class _ScreenSelectionPageState extends State<ScreenSelectionPage> {
     );
   }
 
-  void main() {
-    runApp(MaterialApp(
-      home: ScreenSelectionPage(),
-    ));
-  }
+  
 }

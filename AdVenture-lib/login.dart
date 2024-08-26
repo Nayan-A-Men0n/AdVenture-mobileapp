@@ -37,10 +37,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              'assets/times-square-1.jpg', // Replace with your image path
+              'assets/times-square-1.jpg', 
             ),
             fit: BoxFit.cover,
           ),
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              width: 300, // Adjust the width of the container as needed
+              width: 300, 
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.8),
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
-                      'assets/logof.png', // Replace with your logo path
+                      'assets/logof.png', 
                       height: 100.0,
                       width: 200.0,
                     ),
@@ -128,7 +128,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Navigate to signup page
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -193,7 +192,6 @@ class _LoginPageState extends State<LoginPage> {
           );
           Navigator.pushNamed(context, '/DashboardScreen');
         } else {
-          // Login successful but user ID missing or invalid credentials
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content:

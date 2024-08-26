@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-import 'screendata.dart'; // Import your ScreenIdProvider class
+import 'screendata.dart';
 
 class DisplayAdImage extends StatefulWidget {
   const DisplayAdImage({Key? key}) : super(key: key);
@@ -39,21 +39,24 @@ class _DisplayAdImageState extends State<DisplayAdImage> {
   Future<void> _fetchAd() async {
     final screenData = Provider.of<ScreenIdProvider>(context, listen: false);
     final screenId = screenData.screenId;
-    
+
     if (screenId == null) return; // Handle no screen ID
 
-    final Uri url = Uri.parse('http://192.168.1.4:5000/get-ad/$screenId'); // Replace with your backend URL
+    final Uri url = Uri.parse(
+        'http://192.168.1.4:5000/get-ad/$screenId'); // Replace with your backend URL
     final response = await http.get(url);
-    
+
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final newVideoUrl = data['videoUrl'] as String?;
-      
+
       setState(() {
         if (newVideoUrl != null && newVideoUrl != _videoUrl) {
           _videoUrl = newVideoUrl;
-          _controller?.dispose(); // Dispose the existing controller if it exists
-          _controller = VideoPlayerController.network('http://192.168.1.4:8080/$_videoUrl');
+          _controller
+              ?.dispose(); // Dispose the existing controller if it exists
+          _controller = VideoPlayerController.network(
+              'http://192.168.1.4:8080/$_videoUrl');
           _initializeVideoPlayerFuture = _controller!.initialize().then((_) {
             _controller!.setLooping(true);
             _controller!.play();
@@ -79,8 +82,8 @@ class _DisplayAdImageState extends State<DisplayAdImage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Color.fromARGB(255, 0, 0, 0),
-      
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
       body: Center(
         child: _videoUrl == null
             ? Text('No video available')
@@ -89,7 +92,8 @@ class _DisplayAdImageState extends State<DisplayAdImage> {
                     future: _initializeVideoPlayerFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if (_controller != null && _controller!.value.isInitialized) {
+                        if (_controller != null &&
+                            _controller!.value.isInitialized) {
                           return AspectRatio(
                             aspectRatio: _controller!.value.aspectRatio,
                             child: VideoPlayer(_controller!),
@@ -104,20 +108,25 @@ class _DisplayAdImageState extends State<DisplayAdImage> {
                   )
                 : CircularProgressIndicator(),
       ),
-      floatingActionButton: _controller != null && _controller!.value.isInitialized
-          ? FloatingActionButton(
-              onPressed: () {
-                if (_controller != null) {
-                  setState(() {
-                    _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
-                  });
-                }
-              },
-              child: Icon(
-                _controller != null && _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-              ),
-            )
-          : null,
+      floatingActionButton:
+          _controller != null && _controller!.value.isInitialized
+              ? FloatingActionButton(
+                  onPressed: () {
+                    if (_controller != null) {
+                      setState(() {
+                        _controller!.value.isPlaying
+                            ? _controller!.pause()
+                            : _controller!.play();
+                      });
+                    }
+                  },
+                  child: Icon(
+                    _controller != null && _controller!.value.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                  ),
+                )
+              : null,
     );
   }
 }

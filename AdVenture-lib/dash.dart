@@ -65,7 +65,7 @@ class DashboardScreen extends StatelessWidget {
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 20.0,
         fontWeight: FontWeight.bold,
       ),
@@ -92,7 +92,7 @@ class DashboardScreen extends StatelessWidget {
             );
           },
           icon: Icon(Icons.add_circle_outline),
-          label: Text(
+          label: const Text(
             'Advertise',
             style: TextStyle(
               fontSize: 20.0,
@@ -131,8 +131,8 @@ class DashboardScreen extends StatelessWidget {
               ),
             );
           },
-          icon: Icon(Icons.app_registration),
-          label: Text(
+          icon: const Icon(Icons.app_registration),
+          label: const Text(
             'Register Screen',
             style: TextStyle(
               fontSize: 20.0,
@@ -141,8 +141,8 @@ class DashboardScreen extends StatelessWidget {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 54, 2, 10).withOpacity(0.6),
-            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
+            backgroundColor: const Color.fromARGB(255, 54, 2, 10).withOpacity(0.6),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50.0),
             ),

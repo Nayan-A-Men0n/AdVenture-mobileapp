@@ -134,7 +134,6 @@ def register_screen():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Modify the SQL query to include peak_hour_start and peak_hour_end
     sql = """
         INSERT INTO screens (screen_name, location, business_type, owner_id, footfall, base_rate, peak_hr_multiplier, peak_hour_start, peak_hour_end)
         VALUES (%s, UPPER(LEFT(%s, 1)) || LOWER(SUBSTRING(%s, 2)), UPPER(LEFT(%s, 1)) || LOWER(SUBSTRING(%s, 2)), %s, %s, %s, %s, %s, %s)
@@ -220,24 +219,22 @@ def get_business_types():
 
   finally:
     cursor.close()
-    get_db_connection().close()  # Close connection even on exceptions
+    get_db_connection().close()
    
 @app.route("/regcount/<user_id>", methods=["GET"])
 def get_screen_count(user_id):
   try:
-    # Replace with your actual database connection logic (e.g., using SQLAlchemy, etc.)
     connection = get_db_connection()
     cursor = connection.cursor()
     print(user_id)
-    # Modify the query to count screens based on user_id
     cursor.execute(f"SELECT COUNT(*) FROM screens WHERE owner_id = '{user_id}'")
     result = cursor.fetchone()
 
     if result:
-      screen_count = result[0]  # Extract the count from the query result
+      screen_count = result[0]  
       return jsonify({"count": screen_count})
     else:
-      return jsonify({"count": 0})  # Return 0 if no screens found for the user
+      return jsonify({"count": 0}) 
 
   except Exception as e:
     print(f"Error retrieving screen count for user {user_id}: {e}")
@@ -246,11 +243,9 @@ def get_screen_count(user_id):
 @app.route("/adsplayed/<user_id>", methods=["GET"])
 def get_ads_seen_by(user_id):
   try:
-    # Replace with your actual database connection logic (e.g., using SQLAlchemy, etc.)
     connection = get_db_connection()
     cursor = connection.cursor()
     print(user_id)
-    # Modify the query to count screens based on user_id
     cursor.execute(f"SELECT COUNT(*) FROM ads WHERE advertiser_id = '{user_id}'")
 
     result = cursor.fetchone()
@@ -482,14 +477,14 @@ def upload_image():
         if not conn:
             return jsonify('Failed to connect to the database!', 500)
 
-        image_file_name = request.form['image_file_name']
+        vid_file_name = request.form['vid_file_name']
         advertiser_id = request.form['advertiser_id']
 
         # Prepare INSERT statement with RETURNING ad_id
         sql = "INSERT INTO ads (file_name, advertiser_id) VALUES (%s, %s) RETURNING ad_id;"
 
         try:
-            cursor.execute(sql, (image_file_name, advertiser_id))
+            cursor.execute(sql, (vid_file_name, advertiser_id))
             # Fetch the ad_id value
             ad_id = cursor.fetchone()[0]
             conn.commit()
@@ -533,7 +528,7 @@ def get_highest_spender():
 
         if result:
             username = result[0]
-            total_cost = float(result[1])  # Assuming cost is a numerical value
+            total_cost = float(result[1])  
             return jsonify({"username": username, "total_cost": total_cost}), 200
         else:
             return jsonify({"message": "No ad schedules found"}), 404

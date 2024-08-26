@@ -16,22 +16,20 @@ class _NewScreenPageState extends State<NewScreenPage> {
   String _screenName = '';
   String _location = '';
   String _businessType = '';
-  int _footfall = 0; // Assuming integer footfall
-  double _baseRate = 0.0; // Assuming double base rate
-  double _peakHourMultiplier = 0.0; // Assuming double peak hour multiplier
+  int _footfall = 0;
+  double _baseRate = 0.0;
+  double _peakHourMultiplier = 0.0;
   TimeOfDay? _peakHourStart;
   TimeOfDay? _peakHourEnd;
 
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<UserData>(context, listen: false);
-    final userId = userData.userId; // Assuming userId getter in UserData
+    final userId = userData.userId;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Screen'),
-        backgroundColor: Color(0xff907F9F)
-      ),
+          title: const Text('New Screen'), backgroundColor: Color(0xff907F9F)),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -41,7 +39,6 @@ class _NewScreenPageState extends State<NewScreenPage> {
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Screen Name',
-                  
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -70,7 +67,7 @@ class _NewScreenPageState extends State<NewScreenPage> {
                 onSaved: (newValue) => _businessType = newValue!,
               ),
               TextFormField(
-                keyboardType: TextInputType.number, // For numeric input
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Footfall (average daily)',
                 ),
@@ -80,10 +77,11 @@ class _NewScreenPageState extends State<NewScreenPage> {
                   }
                   return null;
                 },
-                onSaved: (newValue) => _footfall = int.parse(newValue!), // Convert to int
+                onSaved: (newValue) => _footfall = int.parse(newValue!),
               ),
               TextFormField(
-                keyboardType: const TextInputType.numberWithOptions(decimal: true), // For decimal input
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   labelText: 'Base Rate (per impression)',
                 ),
@@ -93,7 +91,8 @@ class _NewScreenPageState extends State<NewScreenPage> {
                   }
                   return null;
                 },
-                onSaved: (newValue) => _baseRate = double.parse(newValue!), // Convert to double
+                onSaved: (newValue) =>
+                    _baseRate = double.parse(newValue!), // Convert to double
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,7 +101,8 @@ class _NewScreenPageState extends State<NewScreenPage> {
                   SizedBox(
                     width: 100.0,
                     child: TextFormField(
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       ),
@@ -112,73 +112,83 @@ class _NewScreenPageState extends State<NewScreenPage> {
                         }
                         return null;
                       },
-                      onSaved: (newValue) => _peakHourMultiplier = double.parse(newValue!),
+                      onSaved: (newValue) =>
+                          _peakHourMultiplier = double.parse(newValue!),
                     ),
                   ),
                 ],
               ),
               Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    const Text('Peak Hour Start:'),
-    TextButton(
-      onPressed: () async {
-        final TimeOfDay? selectedTime = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.now(),
-        );
-        if (selectedTime != null) {
-          setState(() {
-            _peakHourStart = selectedTime;
-          });
-        }
-      },
-      child: Text(_peakHourStart?.format(context) ?? 'Select Start Time'), // Display selected time or default text
-    ),
-  ],
-),
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Text('Peak Hour End:'),
-    TextButton(
-      onPressed: () async {
-        final TimeOfDay? selectedTime = await showTimePicker(
-          context: context,
-          initialTime: _peakHourStart ?? TimeOfDay.now(), // Use previously selected start time if available
-        );
-        if (selectedTime != null) {
-          setState(() {
-            _peakHourEnd = selectedTime;
-          });
-        }
-      },
-      child: Text(_peakHourEnd?.format(context) ?? 'Select End Time'), // Display selected time or default text
-    ),
-  ],
-),
-
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Peak Hour Start:'),
+                  TextButton(
+                    onPressed: () async {
+                      final TimeOfDay? selectedTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      if (selectedTime != null) {
+                        setState(() {
+                          _peakHourStart = selectedTime;
+                        });
+                      }
+                    },
+                    child: Text(_peakHourStart?.format(context) ??
+                        'Select Start Time'), 
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Peak Hour End:'),
+                  TextButton(
+                    onPressed: () async {
+                      final TimeOfDay? selectedTime = await showTimePicker(
+                        context: context,
+                        initialTime: _peakHourStart ??
+                            TimeOfDay
+                                .now(), 
+                      );
+                      if (selectedTime != null) {
+                        setState(() {
+                          _peakHourEnd = selectedTime;
+                        });
+                      }
+                    },
+                    child: Text(_peakHourEnd?.format(context) ??
+                        'Select End Time'), // Display selected time or default text
+                  ),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      // Use user ID from UserData provider
                       String userIdString = userId!.toString();
-                      await registerScreen(_screenName, _location, _businessType, userIdString, _footfall, _baseRate, _peakHourMultiplier, _peakHourStart, _peakHourEnd);
-
-                
+                      await registerScreen(
+                          _screenName,
+                          _location,
+                          _businessType,
+                          userIdString,
+                          _footfall,
+                          _baseRate,
+                          _peakHourMultiplier,
+                          _peakHourStart,
+                          _peakHourEnd);
                     }
                   },
                   child: const Text('Register Screen'),
                   style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(100, 50),
-                      backgroundColor: const Color(0xffA5F8D3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      ),
+                    minimumSize: const Size(100, 50),
+                    backgroundColor: const Color(0xffA5F8D3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -188,38 +198,51 @@ Row(
     );
   }
 
-  Future<void> registerScreen(String screenName, String location, String businessType, String userId, int footfall, double baseRate, double peakHourMultiplier, TimeOfDay? peakHourStart, TimeOfDay? peakHourEnd) async {
-  final response = await http.post(
-    Uri.parse('http://127.0.0.1:5000/newScreen'), // Replace with your actual backend URL
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, dynamic>{
-      'screen_name': screenName,
-      'location': location,
-      'business_type': businessType,
-      'user_id': userId,
-      'footfall': footfall,
-      'base_rate': baseRate,
-      'peak_hour_multiplier': peakHourMultiplier,
-      'peak_hour_start': peakHourStart?.format(context), // Convert TimeOfDay to HH:MM format
-      'peak_hour_end': peakHourEnd?.format(context),
-    }),
-  );
+  Future<void> registerScreen(
+      String screenName,
+      String location,
+      String businessType,
+      String userId,
+      int footfall,
+      double baseRate,
+      double peakHourMultiplier,
+      TimeOfDay? peakHourStart,
+      TimeOfDay? peakHourEnd) async {
+    final response = await http.post(
+      Uri.parse(
+          'http://127.0.0.1:5000/newScreen'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'screen_name': screenName,
+        'location': location,
+        'business_type': businessType,
+        'user_id': userId,
+        'footfall': footfall,
+        'base_rate': baseRate,
+        'peak_hour_multiplier': peakHourMultiplier,
+        'peak_hour_start':
+            peakHourStart?.format(context), // Convert TimeOfDay to HH:MM format
+        'peak_hour_end': peakHourEnd?.format(context),
+      }),
+    );
 
-  if (response.statusCode == 201) {
-    // Registration successful
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Screen registration successful!')),
-    );
-    Navigator.pop(context); // Close the screen after successful registration (optional)
-  } else {
-    // Registration failed
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Screen registration failed! (Status code: ${response.statusCode})'),
-      ),
-    );
+    if (response.statusCode == 201) {
+      // Registration successful
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Screen registration successful!')),
+      );
+      Navigator.pop(
+          context); 
+    } else {
+      // Registration failed
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Screen registration failed! (Status code: ${response.statusCode})'),
+        ),
+      );
+    }
   }
-}
 }
